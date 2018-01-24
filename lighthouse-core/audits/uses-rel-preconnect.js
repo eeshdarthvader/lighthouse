@@ -54,7 +54,7 @@ class UsesRelPreconnectAudit extends Audit {
       }).map(record => {
         return {
           url: new URL(record.url).origin,
-          wastedMs: 0,
+          wastedMs: record.timing(),
         };
       }));
 
