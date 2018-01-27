@@ -8,6 +8,8 @@
 const fs = require('fs');
 const ReportGenerator = require('../lighthouse-core/report/v2/report-generator');
 const log = require('lighthouse-logger');
+const prettyjson = require('prettyjson');
+
 
 /**
  * An enumeration of acceptable output modes:
@@ -45,7 +47,31 @@ function createOutput(results, outputMode) {
   }
   // JSON report.
   if (outputMode === OutputMode.json) {
-    return JSON.stringify(results, null, 2);
+    
+    var performanceCategory = results.reportCategories.map(function(item){ 
+            var obj= {};
+            obj.name = item.name;
+            obj.score = item.score;
+            obj.audits = item.audits.filter(function(el, index){
+                delete el.weight;
+                delete el.group;
+                el.value = el.result.displayValue;
+                delete el.result;
+                return(index < 3);
+            })
+            
+            return obj;
+        }
+    );
+
+    var performanceCategoryAudits =  performanceCategory.filter(a => { 
+        return (a.name === 'Performance' || a.name === 'Progressive Web App')
+        
+    });
+    
+    //return JSON.stringify(performanceCategoryAudits, null, 2);
+    return prettyjson.render(performanceCategoryAudits);
+
   }
   throw new Error('Invalid output mode: ' + outputMode);
 }
