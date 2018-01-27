@@ -25,9 +25,9 @@ _Lighthouse requires Node 6 or later._
 **Installation**:
 
 ```sh
-npm install -g lighthouse
+npm install -g lighthouse-pwa
 # or use yarn:
-# yarn global add lighthouse
+# yarn global add lighthouse-pwa
 ```
 
 **Run it**: `lighthouse https://airhorner.com/`
